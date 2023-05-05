@@ -18,8 +18,8 @@ module FastCount
       # Tree format was added in MySQL 8.0.16.
       # For other formats I wasn't able to find an easy way to get this count.
       def estimated_count(sql)
-        query_plan = @connection.select_value("EXPLAIN format=tree #{sql}")
-        query_plan.match(/rows=(\d+)/)[1].to_i
+        query_plan = @connection.select_one("EXPLAIN #{sql}")
+        query_plan["rows"]
       end
 
       # MySQL already supports "Loose Index Scan" (see https://dev.mysql.com/doc/refman/8.0/en/group-by-optimization.html),
